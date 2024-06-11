@@ -12,7 +12,7 @@ defmodule PhoenixTodo.TodoFixtures do
       attrs
       |> Enum.into(%{
         completed_at: ~U[2024-06-10 14:10:00Z],
-        created_at: ~U[2024-06-10 14:10:00Z],
+        inserted_at: ~U[2024-06-10 14:10:00Z],
         description: "some description",
         title: "some title",
         updated_at: ~U[2024-06-10 14:10:00Z]

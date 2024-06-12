@@ -8,8 +8,8 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     assert json_response(conn, 200)
   end
 
-  # test "POST /api/tasks/", %{conn: conn} do
-  #   conn = post(conn, "/api/tasks", todo: @valid_attrs)
-  #   assert json_response(conn, 201)["data"]["title"] == "Buy milk"
-  # end
+  test "POST /api/tasks/", %{conn: conn} do
+    conn = post(conn, "/api/tasks", todo: @valid_attrs)
+    assert json_response(conn, 201)["data"]["title"] == "Buy milk"
+  end
 end

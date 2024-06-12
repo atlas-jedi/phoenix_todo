@@ -16,9 +16,26 @@ defmodule PhoenixTodo.Todo do
       iex> list_tasks()
       [%Task{}, ...]
 
+      iex> list_tasks(%{"title" => "Task 1"})
+      [%Task{title: "Task 1"}, ...]
+
+      iex> list_tasks(%{"description" => "Important"})
+      [%Task{description: "Important task"}, ...]
+
   """
-  def list_tasks do
-    Repo.all(Task)
+  def list_tasks(params \\ %{}) do
+    Task
+    |> filter_by_title(params["title"])
+    |> filter_by_description(params["description"])
+    |> Repo.all()
+  end
+
+  defp filter_by_title(query, title) do
+    from t in query, where: ilike(t.title, ^"%#{title}%")
+  end
+
+  defp filter_by_description(query, description) do
+    from t in query, where: ilike(t.description, ^"%#{description}%")
   end
 
   @doc """

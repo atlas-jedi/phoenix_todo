@@ -6,8 +6,8 @@ defmodule PhoenixTodoWeb.TodoController do
 
   action_fallback PhoenixTodoWeb.FallbackController
 
-  def index(conn, _params) do
-    tasks = Todo.list_tasks()
+  def index(conn, params) do
+    tasks = Todo.list_tasks(params)
     render(conn, :index, todo: tasks)
   end
 

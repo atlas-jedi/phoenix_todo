@@ -14,6 +14,6 @@ defmodule PhoenixTodo.Todo.Task do
   def changeset(task, attrs) do
     task
     |> cast(attrs, [:title, :description, :completed_at, :inserted_at, :updated_at])
-    |> validate_required([:title, :description, :completed_at, :inserted_at, :updated_at])
+    |> validate_required([:title, :description])
   end
 end

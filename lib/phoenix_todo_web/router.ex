@@ -2,7 +2,7 @@ defmodule PhoenixTodoWeb.Router do
   use PhoenixTodoWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {PhoenixTodoWeb.Layouts, :root}
@@ -20,10 +20,11 @@ defmodule PhoenixTodoWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PhoenixTodoWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", PhoenixTodoWeb do
+    pipe_through :api
+
+    resources "/tasks", TodoController, except: [:new, :edit]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:phoenix_todo, :dev_routes) do

@@ -21,6 +21,16 @@ defmodule PhoenixTodo.TodoTest do
       assert Todo.list_tasks() == [task]
     end
 
+    test "list_tasks/1 filters tasks by title" do
+      task = task_fixture()
+      assert Todo.list_tasks(%{"title" => task.title}) == [task]
+    end
+
+    test "list_tasks/1 filters tasks by description" do
+      task = task_fixture()
+      assert Todo.list_tasks(%{"description" => task.description}) == [task]
+    end
+
     test "get_task!/1 returns the task with given id" do
       task = task_fixture()
       assert Todo.get_task!(task.id) == task

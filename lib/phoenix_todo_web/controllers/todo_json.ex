@@ -20,7 +20,7 @@ defmodule PhoenixTodoWeb.TodoJSON do
       id: task.id,
       title: task.title,
       description: task.description,
-      completed: task.completed_at
+      completed_at: task.completed_at
     }
   end
 end

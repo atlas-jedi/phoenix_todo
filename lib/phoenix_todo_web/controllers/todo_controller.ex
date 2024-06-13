@@ -19,4 +19,12 @@ defmodule PhoenixTodoWeb.TodoController do
       |> render(:show, todo: task)
     end
   end
+
+  def update(conn, %{"id" => id, "todo" => todo_params}) do
+    task = Todo.get_task!(id)
+
+    with {:ok, %Task{} = task} <- Todo.update_task(task, todo_params) do
+      render(conn, :show, todo: task)
+    end
+  end
 end

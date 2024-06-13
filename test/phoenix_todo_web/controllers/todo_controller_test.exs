@@ -110,5 +110,10 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
 
       assert json_response(conn, 200)["data"]["completed_at"] == nil
     end
+
+    test "PATCH /api/tasks:id/complete with non-existent id", %{conn: conn} do
+      conn = patch(conn, "/api/tasks/1/complete")
+      assert json_response(conn, 404)["errors"]["detail"] == "Not Found"
+    end
   end
 end

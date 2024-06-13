@@ -25,6 +25,13 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     assert json_response(conn, 201)["data"]["title"] == "Buy milk"
   end
 
+  test "DELETE /api/tasks/:id", %{conn: conn} do
+    conn = post(conn, "/api/tasks", todo: @valid_attrs)
+    task = json_response(conn, 201)["data"]
+    conn = delete(conn, "/api/tasks/#{task["id"]}")
+    assert json_response(conn, 200)["data"]["title"] == "Buy milk"
+  end
+
   describe "PUT /api/tasks:id endpoint" do
     test "PUT /api/tasks/:id with only title", %{conn: conn} do
       conn = post(conn, "/api/tasks", todo: @valid_attrs)

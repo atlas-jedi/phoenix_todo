@@ -2,6 +2,7 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
   use PhoenixTodoWeb.ConnCase
 
   @valid_attrs %{title: "Buy milk", description: "2% or whole?"}
+  @invalid_attrs %{title: "Buy milk"}
 
   test "GET /api/tasks", %{conn: conn} do
     conn = get(conn, "/api/tasks")
@@ -20,9 +21,16 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     assert task["title"] == "Buy milk" and task["description"] == "2% or whole?"
   end
 
-  test "POST /api/tasks/", %{conn: conn} do
-    conn = post(conn, "/api/tasks", todo: @valid_attrs)
-    assert json_response(conn, 201)["data"]["title"] == "Buy milk"
+  describe "POST /api/tasks/ endpoint" do
+    test "POST /api/tasks/ with valid attrs", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      assert json_response(conn, 201)["data"]["title"] == "Buy milk"
+    end
+
+    test "POST /api/tasks/ with invalid attrs", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @invalid_attrs)
+      assert json_response(conn, 422)["errors"]["description"] == ["can't be blank"]
+    end
   end
 
   test "DELETE /api/tasks/:id", %{conn: conn} do

@@ -134,10 +134,9 @@ defmodule PhoenixTodo.Todo do
   """
   def complete_task(%Task{} = task) do
     new_completed_at =
-      if task.completed_at do
-        nil
-      else
-        DateTime.utc_now()
+      case task.completed_at do
+        nil -> DateTime.utc_now()
+        _ -> nil
       end
 
     task

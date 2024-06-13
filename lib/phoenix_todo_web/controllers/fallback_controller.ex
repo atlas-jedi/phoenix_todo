@@ -14,13 +14,6 @@ defmodule PhoenixTodoWeb.FallbackController do
     |> render(:error, changeset: changeset)
   end
 
-  def call(conn, nil) do
-    conn
-    |> put_status(:unprocessable_entity)
-    |> put_view(json: PhoenixTodoWeb.ChangesetJSON)
-    |> render(:error, changeset: %Ecto.Changeset{})
-  end
-
   # This clause is an example of how to handle resources that cannot be found.
   def call(conn, {:error, :not_found}) do
     conn

@@ -31,4 +31,37 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     conn = delete(conn, "/api/tasks/#{task["id"]}")
     assert json_response(conn, 200)["data"]["title"] == "Buy milk"
   end
+
+  describe "PUT /api/tasks:id endpoint" do
+    test "PUT /api/tasks/:id with only title", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+      conn = put(conn, "/api/tasks/#{task["id"]}", todo: %{title: "Buy soda"})
+
+      assert json_response(conn, 200)["data"]["title"] == "Buy soda" and
+               json_response(conn, 200)["data"]["description"] == "2% or whole?"
+    end
+
+    test "PUT /api/tasks/:id with only description", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+      conn = put(conn, "/api/tasks/#{task["id"]}", todo: %{description: "300ml or 1l?"})
+
+      assert json_response(conn, 200)["data"]["title"] == "Buy milk" and
+               json_response(conn, 200)["data"]["description"] == "300ml or 1l?"
+    end
+
+    test "PUT /api/tasks/:id with title and description", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+
+      conn =
+        put(conn, "/api/tasks/#{task["id"]}",
+          todo: %{title: "Buy soda", description: "300ml or 1l?"}
+        )
+
+      assert json_response(conn, 200)["data"]["title"] == "Buy soda" and
+               json_response(conn, 200)["data"]["description"] == "300ml or 1l?"
+    end
+  end
 end

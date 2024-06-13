@@ -21,28 +21,38 @@ defmodule PhoenixTodoWeb.TodoController do
   end
 
   def update(conn, %{"id" => id, "todo" => todo_params}) do
-    task = Todo.get_task!(id)
-
-    with {:ok, %Task{} = task} <- Todo.update_task(task, todo_params) do
+    with(
+      {:ok, task} <- find_task(id),
+      {:ok, %Task{} = task} <- Todo.update_task(task, todo_params)
+    ) do
       render(conn, :show, todo: task)
     end
   end
 
   def complete(conn, %{"id" => id}) do
-    task = Todo.get_task!(id)
-
-    with {:ok, %Task{} = task} <- Todo.complete_task(task) do
+    with(
+      {:ok, task} <- find_task(id),
+      {:ok, %Task{} = task} <- Todo.complete_task(task)
+    ) do
       render(conn, :show, todo: task)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    task = Todo.get_task!(id)
-
-    with {:ok, %Task{}} <- Todo.delete_task(task) do
+    with(
+      {:ok, task} <- find_task(id),
+      {:ok, %Task{}} <- Todo.delete_task(task)
+    ) do
       conn
       |> put_status(:ok)
       |> render(:show, todo: task)
+    end
+  end
+
+  defp find_task(id) do
+    case Todo.get_task(id) do
+      nil -> {:error, :not_found}
+      task -> {:ok, task}
     end
   end
 end

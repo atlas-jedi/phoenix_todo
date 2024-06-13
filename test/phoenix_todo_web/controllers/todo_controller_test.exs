@@ -64,4 +64,23 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
                json_response(conn, 200)["data"]["description"] == "300ml or 1l?"
     end
   end
+
+  describe "PATCH /api/tasks:id/complete endpoint" do
+    test "PATCH /api/tasks:id/complete on an uncompleted task", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+      conn = patch(conn, "/api/tasks/#{task["id"]}/complete")
+
+      assert json_response(conn, 200)["data"]["completed_at"] != nil
+    end
+
+    test "PATCH /api/tasks:id/complete on a completed task", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+      conn = patch(conn, "/api/tasks/#{task["id"]}/complete")
+      conn = patch(conn, "/api/tasks/#{task["id"]}/complete")
+
+      assert json_response(conn, 200)["data"]["completed_at"] == nil
+    end
+  end
 end

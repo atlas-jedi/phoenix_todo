@@ -28,6 +28,14 @@ defmodule PhoenixTodoWeb.TodoController do
     end
   end
 
+  def complete(conn, %{"id" => id}) do
+    task = Todo.get_task!(id)
+
+    with {:ok, %Task{} = task} <- Todo.complete_task(task) do
+      render(conn, :show, todo: task)
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     task = Todo.get_task!(id)
 

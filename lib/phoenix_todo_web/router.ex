@@ -23,6 +23,8 @@ defmodule PhoenixTodoWeb.Router do
   scope "/api", PhoenixTodoWeb do
     pipe_through :api
 
+    patch "/tasks/:id/complete", TodoController, :complete
+
     resources "/tasks", TodoController, except: [:new, :edit]
   end
 

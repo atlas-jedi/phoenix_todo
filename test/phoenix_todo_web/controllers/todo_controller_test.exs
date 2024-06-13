@@ -24,4 +24,11 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     conn = post(conn, "/api/tasks", todo: @valid_attrs)
     assert json_response(conn, 201)["data"]["title"] == "Buy milk"
   end
+
+  test "DELETE /api/tasks/:id", %{conn: conn} do
+    conn = post(conn, "/api/tasks", todo: @valid_attrs)
+    task = json_response(conn, 201)["data"]
+    conn = delete(conn, "/api/tasks/#{task["id"]}")
+    assert json_response(conn, 200)["data"]["title"] == "Buy milk"
+  end
 end

@@ -33,11 +33,18 @@ defmodule PhoenixTodoWeb.TodoControllerTest do
     end
   end
 
-  test "DELETE /api/tasks/:id", %{conn: conn} do
-    conn = post(conn, "/api/tasks", todo: @valid_attrs)
-    task = json_response(conn, 201)["data"]
-    conn = delete(conn, "/api/tasks/#{task["id"]}")
-    assert json_response(conn, 200)["data"]["title"] == "Buy milk"
+  describe "DELETE /api/tasks/:id endpoint" do
+    test "DELETE /api/tasks/:id with existent id", %{conn: conn} do
+      conn = post(conn, "/api/tasks", todo: @valid_attrs)
+      task = json_response(conn, 201)["data"]
+      conn = delete(conn, "/api/tasks/#{task["id"]}")
+      assert json_response(conn, 200)["data"]["title"] == "Buy milk"
+    end
+
+    test "DELETE /api/tasks/:id with non-existent id", %{conn: conn} do
+      conn = delete(conn, "/api/tasks/1")
+      assert json_response(conn, 404)["errors"]["detail"] == "Not Found"
+    end
   end
 
   describe "PUT /api/tasks:id endpoint" do

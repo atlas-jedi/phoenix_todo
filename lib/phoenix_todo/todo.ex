@@ -118,4 +118,30 @@ defmodule PhoenixTodo.Todo do
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
   end
+
+  @doc """
+  Completes a task.
+
+  If the task is already completed, it will be marked as incomplete.
+
+  ## Examples
+
+      iex> complete_task(task)
+      {:ok, %Task{}}
+
+      iex> complete_task(task)
+      {:error, %Ecto.Changeset{}}
+  """
+  def complete_task(%Task{} = task) do
+    new_completed_at =
+      if task.completed_at do
+        nil
+      else
+        DateTime.utc_now()
+      end
+
+    task
+    |> Task.changeset(%{completed_at: new_completed_at})
+    |> Repo.update()
+  end
 end

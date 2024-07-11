@@ -17,7 +17,7 @@ defmodule PhoenixTodoWeb.Router do
   scope "/", PhoenixTodoWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", TodoLive
   end
 
   scope "/api", PhoenixTodoWeb do
